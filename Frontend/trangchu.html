@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FoodHub - Đặt đồ ăn online</title>
+  <link rel="stylesheet" href="css/trangchu.css"/>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="header-container">
+      <a href="#home" class="logo" id="logoHome" aria-label="Về trang chủ">
+        <div>
+          <img src="https://raw.githubusercontent.com/dinhquycoder2k5/DataStoreInHere/refs/heads/main/assets/Gemini_Generated_Image_5vxokj5vxokj5vxo.png" alt="FoodHub Logo">
+        </div>
+        FastFood
+      </a>
+
+      <nav>
+        <a href="#home">Trang chủ</a>
+        <a href="#menu">Thực đơn</a>
+        <a href="#about">Về chúng tôi</a>
+        <a href="#architecture">Kiến trúc hệ thống</a>
+
+        <a href="#" class="cart-btn" onclick="toggleCart()">
+          🛒 Giỏ hàng
+          <span class="cart-count" id="cartCount">0</span>
+        </a>
+
+        <a href="#" class="orders-btn" onclick="openOrders()">📦 Đơn Hàng Của Tôi</a>
+        <a href="#" class="support-btn" onclick="openSupport()">💬 Hỗ trợ</a>
+        <a href="#" id="authBtn" class="login-btn" onclick="openLogin()">🔐 Đăng nhập</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" id="home">
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <span class="hero-dot"></span>
+        Hệ thống SOA / Microservices • API Gateway • Các service độc lập
+      </div>
+      <h1>Đặt đồ ăn ngon, giao tận nơi</h1>
+      <p>Hàng trăm món ăn đa dạng, giao hàng nhanh chóng trong 30 phút</p>
+      <div class="search-box">
+        <input type="text" placeholder="Tìm kiếm món ăn, nhà hàng..." id="globalSearch">
+        <button onclick="handleSearch()">Tìm kiếm</button>
+      </div>
+      <p class="hero-sub">
+        Tối ưu cho <strong>scalability</strong>, <strong>fault tolerance</strong> và <strong>triển khai liên tục (CI/CD)</strong>.
+      </p>
+    </div>
+  </section>
+
+  <!-- Categories -->
+  <section class="categories" id="about">
+    <h2>Danh mục món ăn</h2>
+    <p class="section-subtitle">
+      Chúng tôi phân loại món theo nhóm giúp bạn chọn nhanh hơn — đồng thời mapping 1-1 với Menu Service trong kiến trúc SOA.
+    </p>
+    <div class="category-grid">
+      <div class="category-card" onclick="filterCategory('burger')">
+        <div class="category-icon">🍔</div><h3>Burger</h3>
+      </div>
+      <div class="category-card" onclick="filterCategory('pizza')">
+        <div class="category-icon">🍕</div><h3>Pizza</h3>
+      </div>
+      <div class="category-card" onclick="filterCategory('sushi')">
+        <div class="category-icon">🍣</div><h3>Sushi</h3>
+      </div>
+      <div class="category-card" onclick="filterCategory('noodles')">
+        <div class="category-icon">🍜</div><h3>Mì & Phở</h3>
+      </div>
+      <div class="category-card" onclick="filterCategory('drink')">
+        <div class="category-icon">🥤</div><h3>Đồ uống</h3>
+      </div>
+      <div class="category-card" onclick="filterCategory('dessert')">
+        <div class="category-icon">🍰</div><h3>Tráng miệng</h3>
+      </div>
+    </div>
+  </section>
+
+  <!-- Menu Items -->
+  <section class="menu-section" id="menu">
+    <h2>Món ăn phổ biến</h2>
+    <p class="section-subtitle">
+      Dữ liệu phía dưới mô phỏng response từ <strong>Menu Service</strong> đi qua <strong>API Gateway</strong>, sau đó được JS render ra giao diện.
+    </p>
+    <div class="menu-grid" id="menuGrid"></div>
+  </section>
+
+  <!-- Architecture Section -->
+  <section class="architecture" id="architecture">
+    <div class="architecture-header">
+      <h2>Kiến trúc hệ thống FastFood theo SOA</h2>
+      <p>
+        Hệ thống được thiết kế theo <strong>Kiến trúc hướng dịch vụ (SOA / Microservices)</strong>.  
+        Mỗi khối chức năng là một <strong>service độc lập</strong>, giao tiếp thông qua <strong>API Gateway</strong>, giúp dễ mở rộng, cô lập lỗi và triển khai nhanh.
+      </p>
+    </div>
+
+    <div class="architecture-grid">
+      <article class="arch-card">
+        <div class="arch-icon">🌐</div>
+        <h3>API Gateway</h3>
+        <p>
+          Cửa vào duy nhất của hệ thống. Frontend (trang web này) chỉ gọi tới API Gateway, 
+          không gọi trực tiếp từng service bên dưới.
+        </p>
+        <ul class="arch-tags">
+          <li>Routing request</li>
+          <li>Auth/Token</li>
+          <li>Rate limiting</li>
+        </ul>
+      </article>
+
+      <article class="arch-card">
+        <div class="arch-icon">🔐</div>
+        <h3>Auth Service</h3>
+        <p>
+          Xử lý đăng nhập, đăng ký, xác thực token cho khách hàng và admin.  
+          Frontend chỉ quan tâm tới <em>token</em> & status đăng nhập.
+        </p>
+        <ul class="arch-tags">
+          <li>JWT / Session</li>
+          <li>Phân quyền</li>
+          <li>Bảo mật</li>
+        </ul>
+      </article>
+
+      <article class="arch-card">
+        <div class="arch-icon">👤</div>
+        <h3>Customer Service</h3>
+        <p>
+          Quản lý hồ sơ khách hàng, địa chỉ giao hàng, lịch sử đặt món.  
+          Hỗ trợ hiển thị "Đơn Hàng Của Tôi" trên giao diện.
+        </p>
+        <ul class="arch-tags">
+          <li>Profile</li>
+          <li>Địa chỉ</li>
+          <li>Lịch sử mua</li>
+        </ul>
+      </article>
+
+      <article class="arch-card">
+        <div class="arch-icon">🪙</div>
+        <h3>Restaurant &amp; Menu Service</h3>
+        <p>
+          Quản lý nhà hàng, danh sách món ăn, giá, tồn kho.  
+          Admin có thể <strong>thêm/sửa/xóa món</strong> mà không ảnh hưởng các service khác.
+        </p>
+        <ul class="arch-tags">
+          <li>Menu động</li>
+          <li>Tồn kho</li>
+          <li>Multi-restaurant</li>
+        </ul>
+      </article>
+
+      <article class="arch-card">
+        <div class="arch-icon">📦</div>
+        <h3>Order Service</h3>
+        <p>
+          Nhận giỏ hàng từ frontend, tạo đơn hàng, lưu trạng thái  
+          <em>processing → shipping → delivered</em> như bạn thấy trong sidebar "Đơn Hàng Của Tôi".
+        </p>
+        <ul class="arch-tags">
+          <li>Quản lý đơn</li>
+          <li>Trạng thái</li>
+          <li>Liên kết Payment</li>
+        </ul>
+      </article>
+
+      <article class="arch-card">
+        <div class="arch-icon">🚚</div>
+        <h3>Delivery Service</h3>
+        <p>
+          Gán shipper, tính thời gian giao, theo dõi vị trí.  
+          Nếu service này lỗi, phần đặt món vẫn hoạt động (cô lập lỗi).
+        </p>
+        <ul class="arch-tags">
+          <li>Shipper</li>
+          <li>Tracking</li>
+          <li>ETA</li>
+        </ul>
+      </article>
+
+      <article class="arch-card">
+        <div class="arch-icon">💳</div>
+        <h3>Payment Service (VNPAY)</h3>
+        <p>
+          Tích hợp cổng thanh toán (VNPAY...) và lưu log giao dịch.  
+          Order Service chỉ cần gọi sang Payment qua API.
+        </p>
+        <ul class="arch-tags">
+          <li>VNPAY</li>
+          <li>Thanh toán an toàn</li>
+          <li>Hoàn tiền</li>
+        </ul>
+      </article>
+
+      <article class="arch-card">
+        <div class="arch-icon">📊</div>
+        <h3>Staff &amp; Finance Service</h3>
+        <p>
+          Quản lý nhân viên, ca làm, thống kê doanh thu, báo cáo cho admin.  
+          Phía Admin Dashboard đọc số liệu từ service này.
+        </p>
+        <ul class="arch-tags">
+          <li>Nhân sự</li>
+          <li>Doanh thu</li>
+          <li>Báo cáo</li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="architecture-note">
+      <strong>So sánh nhanh với Monolithic:</strong>
+      <span>
+        Monolithic giống một khối đất sét — sửa một chỗ dễ vỡ cả hệ thống.  
+        SOA thì giống lắp LEGO — mỗi service là một khối, có thể thay thế, scale riêng, rollback riêng.
+      </span>
+    </div>
+  </section>
+
+  <!-- Cart Sidebar -->
+  <div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <h2>Giỏ hàng của bạn</h2>
+      <button class="close-cart" onclick="toggleCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <div class="empty-cart">
+        <p>Giỏ hàng trống</p>
+        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Thêm món ăn vào giỏ hàng nhé!</p>
+      </div>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Tổng cộng:</span><span id="cartTotal">0đ</span>
+      </div>
+      <button class="checkout-btn" onclick="checkout()">Đặt hàng ngay</button>
+    </div>
+  </div>
+
+  <!-- Orders Sidebar -->
+  <div class="orders-sidebar" id="ordersSidebar">
+    <div class="orders-header">
+      <h2>Đơn Hàng Của Tôi</h2>
+      <button class="close-orders" onclick="closeOrders()">✕</button>
+    </div>
+    <div class="orders-list" id="ordersList"></div>
+  </div>
+
+  <!-- Support Modal -->
+  <div class="modal" id="supportModal" aria-hidden="true" role="dialog">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeSupport()">✕</button>
+      <h3>Hỗ trợ khách hàng</h3>
+      <p class="muted">Chúng tôi sẵn sàng giúp đỡ bạn 08:00–22:00 mỗi ngày.</p>
+
+      <div class="faq">
+        <details>
+          <summary>Phí giao hàng tính như thế nào?</summary>
+          <p>Phí dựa trên khoảng cách &amp; khung giờ cao điểm. Hệ thống sẽ báo phí trước khi đặt.</p>
+        </details>
+        <details>
+          <summary>Tôi muốn hủy đơn thì làm sao?</summary>
+          <p>Trong mục "Đơn Hàng Của Tôi", chọn đơn đang xử lý và bấm Hủy (nếu còn thời gian cho phép).</p>
+        </details>
+        <details>
+          <summary>Tôi cần xuất hóa đơn VAT?</summary>
+          <p>Điền thông tin công ty khi thanh toán hoặc gửi yêu cầu tại form dưới đây.</p>
+        </details>
+      </div>
+
+      <form class="support-form" onsubmit="return submitSupport(event)">
+        <label>Họ tên
+          <input type="text" id="supName" placeholder="Nguyễn Văn A" required>
+        </label>
+        <label>Email
+          <input type="email" id="supEmail" placeholder="you@example.com" required>
+        </label>
+        <label>Nội dung yêu cầu
+          <textarea id="supMsg" rows="4" placeholder="Mô tả vấn đề của bạn..." required></textarea>
+        </label>
+        <button class="btn-primary" type="submit">Gửi yêu cầu</button>
+      </form>
+      <div class="contact-inline">
+        <span>📞 Hotline: 0389296211</span> • <span>📧 dquy.hotro247@gmail.com</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login Modal -->
+  <div class="modal" id="loginModal" aria-hidden="true" role="dialog">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeLogin()">✕</button>
+      <h3>Đăng nhập</h3>
+      <form class="login-form" onsubmit="return handleLogin(event)">
+        <label>Email
+          <input type="email" id="loginEmail" placeholder="you@example.com" required>
+        </label>
+        <label>Mật khẩu
+          <input type="password" id="loginPassword" placeholder="••••••••" required>
+        </label>
+        <label class="checkbox">
+          <input type="checkbox" id="rememberMe"> Ghi nhớ tôi
+        </label>
+
+        <button class="btn-primary" type="submit">Đăng nhập</button>
+
+        <button class="btn-primary"
+                type="button"
+                onclick="loginAsAdmin()"
+                style="background:#10b981; margin-top:6px;">
+          👑 Đăng nhập bằng Admin
+        </button>
+      </form>
+      <p class="muted small">
+        Demo không có backend — đăng nhập chỉ minh họa, nút Admin sẽ chuyển sang giao diện quản trị.
+      </p>
+    </div>
+  </div>
+
+  <!-- Overlay -->
+  <div class="overlay" id="overlay" onclick="closePanels()"></div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Về FoodHub</h3>
+        <ul>
+          <li><a href="#">Giới thiệu</a></li>
+          <li><a href="#">Tin tức</a></li>
+          <li><a href="#">Tuyển dụng</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Hỗ trợ</h3>
+        <ul>
+          <li><a href="#">Câu hỏi thường gặp</a></li>
+          <li><a href="#">Chính sách</a></li>
+          <li><a href="#">Liên hệ</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Liên hệ</h3>
+        <ul>
+          <li>📞 Hotline: 0389296211</li>
+          <li>📧 Email: dquy.hotro247@gmail.com</li>
+          <li>📍 Hà Nội, Việt Nam</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 FoodHub. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/trangchu.js"></script>
+</body>
+</html>
